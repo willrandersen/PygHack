@@ -23,9 +23,12 @@ for row in range(len(ticket_sales["EventDate"])):
 
 for row in range(len(concession_sales["Order Date"])):
     order_date = datetime.strptime(concession_sales.at[row, "Order Date"], "%m/%d/%Y %I:%M:%S %p")
-    for x in range(len(ticket_sales)):
-        if ticket_sales.at[x, "EventDate"] == order_date:
-            concession_sales.at[x, "InternalEventName"] = ticket_sales.at[x, "InternalEventName"]
+    closest = find_closest(order_date, movie_dates)
+    for x in range(len(ticket_sales["EventDate"])):
+        if closest == ticket_sales.at[x, "EventDate"]:
+            concession_sales.at[row, "InternalEventName"] = ticket_sales.at[x, "InternalEventName"]
+print(ticket_sales["EventDate"][0])
+
 
 
 concession_sales.to_csv("test.csv")
